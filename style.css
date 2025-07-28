@@ -1,0 +1,20 @@
+const API_KEY = "YOUR_HELIUS_API_KEY"; // Replace with your API key
+
+async function loadNFTs() {
+  const wallet = document.getElementById("wallet").value;
+  const container = document.getElementById("nft-container");
+  container.innerHTML = "Loading...";
+
+  const res = await fetch(`https://api.helius.xyz/v0/addresses/${wallet}/nfts?api-key=${API_KEY}`);
+  const data = await res.json();
+
+  container.innerHTML = "";
+  data.forEach(nft => {
+    const img = document.createElement("img");
+    img.src = nft.content?.links?.image || "";
+    img.alt = nft.content?.metadata?.name || "Unnamed NFT";
+    img.style.width = "200px";
+    img.style.margin = "10px";
+    container.appendChild(img);
+  });
+}
