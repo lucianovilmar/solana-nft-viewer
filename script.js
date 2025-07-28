@@ -1,4 +1,4 @@
-const API_KEY = "YOUR_HELIUS_API_KEY"; // Replace with your API key
+const API_KEY = "4803b13b-13a1-4b1d-a845-d74d77c4368b"; // Replace with your API key
 
 async function loadNFTs() {
   const wallet = document.getElementById("wallet").value;
