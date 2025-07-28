@@ -8,7 +8,7 @@ async function loadNFTs() {
   const res = await fetch(`https://api.helius.xyz/v0/addresses/${wallet}/nfts?api-key=${API_KEY}`);
   const data = await res.json();
 
-  container.innerHTML = "";
+  container.innerHTML = "teste";
   data.forEach(nft => {
     const img = document.createElement("img");
     img.src = nft.content?.links?.image || "";
