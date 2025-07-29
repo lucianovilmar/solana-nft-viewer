@@ -1,1 +1,63 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Poseidons - Tensor NFT Viewer</title>
+  <style>
+    body { font-family: Arial; padding: 2rem; }
+    .nft { border: 1px solid #ddd; padding: 1rem; margin: 1rem 0; }
+    img { max-width: 200px; }
+  </style>
+</head>
+<body>
+  <h1>Poseidons NFTs on Tensor</h1>
+  <div id="nft-list">Loading...</div>
+
+  <script>
+    async function fetchPoseidons() {
+      const query = `
+        query FetchListings {
+          listings(
+            collectionSlug: "poseidons",
+            limit: 10,
+            sortBy: "price",
+            order: "asc"
+          ) {
+            id
+            mintId
+            metadataUri
+            price
+            imageUri
+            tokenName
+          }
+        }
+      `;
+
+      const res = await fetch("https://api.tensor.trade/graphql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query })
+      });
+
+      const { data } = await res.json();
+
+      const container = document.getElementById("nft-list");
+      container.innerHTML = "";
+
+      data.listings.forEach(nft => {
+        const item = document.createElement("div");
+        item.className = "nft";
+        item.innerHTML = `
+          <h3>${nft.tokenName}</h3>
+          <img src="${nft.imageUri}" />
+          <p><strong>Price:</strong> ${nft.price / 1e9} SOL</p>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    fetchPoseidons();
+  </script>
+</body>
+</html>
