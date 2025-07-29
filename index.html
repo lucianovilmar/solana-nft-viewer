@@ -2,15 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Solana NFT Viewer (No Helius)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Solana NFT Viewer</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.89.1/lib/index.iife.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@metaplex-foundation/js@0.22.1/dist/index.iife.min.js"></script>
 </head>
 <body>
-  <h1>Solana NFT Viewer</h1>
-  <input type="text" id="wallet" placeholder="Enter Solana wallet address" />
-  <button onclick="loadNFTs()">Load NFTs</button>
-  <div id="nft-container"></div>
+  <div class="container">
+    <h1>Solana NFT Viewer</h1>
+    <input id="wallet" placeholder="Enter Solana Wallet" />
+    <button onclick="loadNFTs()">Load NFTs</button>
+    <div id="nfts" class="nfts-grid"></div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
