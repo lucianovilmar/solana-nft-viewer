@@ -10,6 +10,7 @@ async function loadNFTs() {
 
   container.innerHTML = "teste";
   data.forEach(nft => {
+    container.innerHTML = "entrou na imagem do nft";
     const img = document.createElement("img");
     img.src = nft.content?.links?.image || "";
     img.alt = nft.content?.metadata?.name || "Unnamed NFT";
