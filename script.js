@@ -1,21 +1,38 @@
-const API_KEY = "4803b13b-13a1-4b1d-a845-d74d77c4368b"; // Replace with your API key
-
 async function loadNFTs() {
-  const wallet = document.getElementById("wallet").value;
-  const container = document.getElementById("nft-container");
+  const walletAddress = document.getElementById("wallet").value.trim();
+  const container = document.getElementById("nfts");
   container.innerHTML = "Loading...";
 
-  const res = await fetch(`https://api.helius.xyz/v0/addresses/${wallet}/nfts?api-key=${API_KEY}`);
-  const data = await res.json();
+  try {
+    const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+    const metaplex = new metaplexJs.Metaplex(connection);
 
-  container.innerHTML = "teste";
-  data.forEach(nft => {
-    container.innerHTML = "entrou na imagem do nft";
-    const img = document.createElement("img");
-    img.src = nft.content?.links?.image || "";
-    img.alt = nft.content?.metadata?.name || "Unnamed NFT";
-    img.style.width = "200px";
-    img.style.margin = "10px";
-    container.appendChild(img);
-  });
+    const owner = new solanaWeb3.PublicKey(walletAddress);
+    const allNfts = await metaplex.nfts().findAllByOwner({ owner });
+
+    if (!allNfts.length) {
+      container.innerHTML = "<p>No NFTs found.</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+
+    for (const nft of allNfts) {
+      try {
+        const metadata = await metaplex.nfts().load({ metadata: nft });
+        const name = metadata.name;
+        const image = metadata.json?.image;
+
+        const div = document.createElement("div");
+        div.className = "nft";
+        div.innerHTML = `<img src="${image}" alt="${name}"/><p>${name}</p>`;
+        container.appendChild(div);
+      } catch (e) {
+        console.warn("Skipping invalid NFT", e);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = "<p>Failed to load NFTs. Check the address or try again.</p>";
+  }
 }
