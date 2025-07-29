@@ -33,6 +33,6 @@ async function loadNFTs() {
     }
   } catch (error) {
     console.error(error);
-    container.innerHTML = "<p>Failed to load NFTs. Check the address or try again."walletAddress"</p>";
+    container.innerHTML = `<p>Failed to load NFTs. Check the address or try again."${walletAddress}"</p>`;
   }
 }
